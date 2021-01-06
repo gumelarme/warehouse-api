@@ -1,0 +1,21 @@
+<?php
+
+namespace Tests;
+
+use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
+use Illuminate\Foundation\Testing\DatabaseMigrations;
+
+abstract class TestCase extends BaseTestCase
+{
+    use CreatesApplication, DatabaseMigrations;
+
+    public function setUp(): void
+    {
+        parent::setUp();
+
+        // seed the database
+        // $this->artisan('db:seed');
+        // alternatively you can call
+        $this->seed();
+    }
+}
