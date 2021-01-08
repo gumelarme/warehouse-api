@@ -17,7 +17,7 @@ class CreateWarehousesTable extends Migration
             $table->id();
             $table->string('name');
             $table->string('address');
-            $table->timestamps();
+            // $table->timestamps();
         });
     }
 

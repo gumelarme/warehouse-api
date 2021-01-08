@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Warehouse extends Model
 {
     use HasFactory;
+    public $timestamps = false;
     protected $fillable = ['name', 'address'];
     public static $createRules = [
         'name' => 'required|unique:warehouses|max:200|min:4',
@@ -15,7 +16,7 @@ class Warehouse extends Model
     ];
 
     public static $updateRules= [
-        'name' => 'unique:warehouses|max:200|min:4',
+        'name' => 'max:200|min:4',
         'address' => 'max:500|min:5',
     ];
 

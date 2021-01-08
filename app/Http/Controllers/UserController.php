@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\User;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
@@ -19,6 +20,20 @@ class UserController extends Controller
         ];
     }
 
+    public function login(Request $request){
+       $this->validate($request, [
+           'username' => 'required',
+           'password' => 'required|min:8',
+       ]);
+
+       $user = User::where('username', $request['username'])->firstOrFail();
+       if(Hash::check($request['password'], $user->password)){
+           return $user;
+       }
+
+       return response()->json(['error' => 'Unauthenticated.'], 401);
+    }
+
     public function store(Request $req){
         $this->validate($req, User::$createRules);
         $user = User::make($req->all());
@@ -31,8 +46,12 @@ class UserController extends Controller
     }
 
     public function update(Request $req, $id){
-        $this->validate($req, User::$updateRules);
         $user = User::findOrFail($id);
+
+        $rules = User::$updateRules;
+        $rules['username'] .= $user->id;
+
+        $this->validate($req, $rules);
         $data = $req->all();
 
         if(isset($data['password'])){
@@ -59,15 +78,6 @@ class UserController extends Controller
                 'message' => 'There are data still associated with this user, unable to delete.',
             ], 409);
         }
-    }
-
-    public function showStorageLogs($id){
-        $user = User::findOrFail($id);
-
-        return response()->json([
-            'storage_ins' => $user->storageIns,
-            'storage_outs' => $user->storageOuts
-        ], 200);
     }
 
 }

@@ -17,7 +17,7 @@ class CreateGoodsTable extends Migration
             $table->id();
             $table->string('name');
             $table->bigInteger('provider_id')->unsigned()->nullable();
-            $table->timestamps();
+            // $table->timestamps();
 
             $table->foreign('provider_id')
                   ->references('id')

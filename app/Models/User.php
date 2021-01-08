@@ -2,12 +2,13 @@
 
 namespace App\Models;
 
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Hash;
 
 class User extends Model
 {
+    public $timestamps = false;
     /**
      * The attributes that are mass assignable.
      *
@@ -43,8 +44,8 @@ class User extends Model
         'password' => 'required|min:8',
     ];
 
-    public static $updateRules= [
-        'username' => 'unique:users|min:4',
+    public static $updateRules = [
+        'username' => 'min:4|unique:users,username,',
         'password' => 'min:8',
     ];
 

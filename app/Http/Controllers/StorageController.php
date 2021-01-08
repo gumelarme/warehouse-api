@@ -4,22 +4,25 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Storage;
+use App\Models\StorageIn;
+use App\Models\StorageOut;
 
 class StorageController extends Controller
 {
     public function index()
     {
         return [
-            'storages' => Storage::with('warehouse')->with('goods')->paginate(100),
+            'storages' => Storage::with('warehouse')->with('goods', 'goods.provider')->paginate(100),
         ];
     }
 
     public function show($id)
     {
         return [
-            'storage' => Storage::with('warehouse')->with('goods')->find($id)
+            'storage' => Storage::with('warehouse')->with('goods', 'goods.provider')->find($id)
         ];
     }
+
 
     //TODO try catch?
     public function store(Request $request)
@@ -57,11 +60,20 @@ class StorageController extends Controller
         }
     }
 
-    public function showStoragesLog($id){
-        $storage = Storage::findOrFail($id);
+    public function showStorageLogs($id){
+        $storage = Storage::with('warehouse')->with('goods', 'goods.provider')->findOrFail($id);
+        $in = StorageIn::with('user')->where('storage_id', $id)->get();
+        for ($i = 0; $i < count($in); $i++) {
+            $in[$i]['storage'] = $storage;
+        }
+
+        $out = StorageOut::with('user')->where('storage_id', $id)->get();
+        for ($i = 0; $i < count($out); $i++) {
+            $out[$i]['storage'] = $storage;
+        }
         return response()->json([
-            'storage_ins' => $storage->storageIns,
-            'storage_outs' => $storage->storageOuts,
+            'storage_ins' => $in,
+            'storage_outs' => $out,
         ], 200);
     }
 }

@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Provider extends Model
 {
     use HasFactory;
+    public $timestamps = false;
     protected $fillable = [
         'name', 'contact'
     ];
@@ -18,7 +19,7 @@ class Provider extends Model
     ];
 
     public static $updateRules = [
-        'name' => 'unique:providers|max:200',
+        'name' => 'max:200',
         'contact' => 'max:200',
     ];
 

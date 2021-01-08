@@ -8,10 +8,11 @@ use Illuminate\Database\Eloquent\Model;
 class Goods extends Model
 {
     use HasFactory;
+    public $timestamps = false;
     public $fillable = ['name', 'provider_id'];
     public static $createRules = [
         'name' => 'required|min:2',
-        'provider_id' => 'required'
+        'provider_id' => 'required|gt:0'
     ];
 
     public function provider(){

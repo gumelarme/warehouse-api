@@ -21,7 +21,9 @@ Route::resource('storages', StorageController::class);
 Route::resource('storage_ins', StorageInController::class);
 Route::resource('storage_outs', StorageOutController::class);
 
+Route::post('login/', 'UserController@login');
 Route::get('users/{user}/storages', 'UserController@showStorageLogs');
 Route::get('providers/{provider}/goods', 'ProviderController@showGoods');
 Route::get('warehouses/{warehouse}/storages', 'WarehouseController@showStorages');
+Route::get('storages/{storage}/log', 'StorageController@showStorageLogs');
 
