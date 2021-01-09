@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Warehouse;
+use App\Models\Storage;
 
 class WarehouseController extends Controller
 {
@@ -60,7 +61,7 @@ class WarehouseController extends Controller
     public function showStorages($id){
         $wh = Warehouse::findOrFail($id);
         return response()->json([
-            'goods' => $wh->storages,
+            'storages' => Storage::with('goods')->where('warehouse_id', $id)->get(),
         ], 200);
     }
 }

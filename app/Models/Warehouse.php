@@ -20,7 +20,7 @@ class Warehouse extends Model
         'address' => 'max:500|min:5',
     ];
 
-    public function storage(){
+    public function storages(){
         return $this->hasMany(Storage::class);
     }
 }
